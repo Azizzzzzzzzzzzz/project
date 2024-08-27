@@ -192,6 +192,7 @@ const CocktailsFilters = ({ isMobile, onClose, onApplyFilters }) => {
   ];
 
   return (
+    
     <div className={`${styles.container} ${isMobile ? styles.mobileContainer : ''}`}>
       {isMobile && (
         <div className={styles.mobileHeader}>
@@ -311,6 +312,7 @@ const CocktailsFilters = ({ isMobile, onClose, onApplyFilters }) => {
             totalPages={totalPages}
             onPageChange={handlePageChange}
           />
+          
         </>
       )}
     </div>

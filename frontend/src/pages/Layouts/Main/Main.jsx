@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef, act } from "react";
-import { Outlet } from "react-router-dom";
 import styles from "./Main.module.css";
 import Auth_Footer from "../../../components/Auth_Footer/Auth_Footer";
 import Auth_Header from "../../../components/Auth_Header/Auth_Header";
@@ -17,6 +16,14 @@ const Main = () => {
 	const [hasMore, setHasMore] = useState(true);
 	const [activeFilters, setActiveFilters] = useState({});
 	const inactivityTimeoutRef = useRef(null);
+
+	const [filters, setFilters] = useState({
+		        savedOnly: false,
+		        strength: null,
+		        format: null,
+		        complexity: null,
+		        flavors: 4
+		    });
 
 	useEffect(() => {
 		if (isFilterOpen) {
@@ -107,8 +114,14 @@ const Main = () => {
 		} else {
 			setHasMore(false);
 		}
-	};
-
+	}
+	const filteredCocktails = cocktails.filter(cocktail => {
+		        return (
+		            (!filters.strength || cocktail.strength === filters.strength) &&
+		            (!filters.format || cocktail.format === filters.format) &&
+		            (!filters.complexity || cocktail.complexity === filters.complexity)
+		        );
+		    })
 	return (
 		<div className={styles.main_page}>
 		  <Auth_Header />
@@ -131,6 +144,15 @@ const Main = () => {
 				  />
 				))}
 			  </div>
+			<div className={styles.main_error}>
+        		<img src="/LyingCocktail.png" alt="Empty" className={styles.empty_image} />
+        
+           	 	<h2>Ну и запросы!..</h2>
+            	<p>
+              		Не нашлось коктейлей, соответствующих всем установленным фильтрам. <br />
+              		Попробуйте немного изменить критерии.
+            	</p>
+           </div>
 			  {hasMore && (
 				<div className={styles.content__button}>
 				  <Button 
@@ -162,6 +184,9 @@ const Main = () => {
 					<CocktailsFilters isMobile={true} onClose={toggleFilter} onApplyFilters={handleApplyFilters} />
 				  </div>
 				)}
+				   	<div className={styles.filters}>
+ 						<CocktailsFilters onApplyFilters={handleApplyFilters} />
+ 					</div>
 			  </>
 			)}
 		  </div>
